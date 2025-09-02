@@ -1,0 +1,26 @@
+services:
+  mcp:
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    command: python app/mcp_server.py
+    ports:
+      - "8000:8000"
+    networks:
+      - appnet
+
+  flask:
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    command: python app/main.py
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mcp
+    networks:
+      - appnet
+
+networks:
+  appnet:
+    driver: bridge
